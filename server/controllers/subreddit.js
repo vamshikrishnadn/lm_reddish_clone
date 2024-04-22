@@ -39,9 +39,15 @@ const getSubredditPosts = async (req, res) => {
       sortQuery = {};
   }
 
-  const subreddit = await Subreddit.findOne({
+  let subreddit = await Subreddit.findOne({
     subredditName: { $regex: new RegExp('^' + subredditName + '$', 'i') },
-  }).populate('admin', 'username');
+  })
+    .populate('admin', 'username')
+    .lean();
+
+  const subUsers = await User.find({ _id: { $in: subreddit.subscribedBy } }).lean();
+
+  subreddit = { ...subreddit, subUsers };
 
   if (!subreddit) {
     return res.status(404).send({
@@ -85,9 +91,7 @@ const createNewSubreddit = async (req, res) => {
 
   const admin = await User.findById(req.user);
   if (!admin) {
-    return res
-      .status(404)
-      .send({ message: 'User does not exist in database.' });
+    return res.status(404).send({ message: 'User does not exist in database.' });
   }
 
   const existingSubName = await Subreddit.findOne({
@@ -121,18 +125,14 @@ const editSubDescription = async (req, res) => {
   const { id } = req.params;
 
   if (!description) {
-    return res
-      .status(400)
-      .send({ message: `Description body can't be empty.` });
+    return res.status(400).send({ message: `Description body can't be empty.` });
   }
 
   const admin = await User.findById(req.user);
   const subreddit = await Subreddit.findById(id);
 
   if (!admin) {
-    return res
-      .status(404)
-      .send({ message: 'User does not exist in database.' });
+    return res.status(404).send({ message: 'User does not exist in database.' });
   }
 
   if (!subreddit) {
@@ -159,11 +159,11 @@ const subscribeToSubreddit = async (req, res) => {
 
   if (subreddit.subscribedBy.includes(user._id.toString())) {
     subreddit.subscribedBy = subreddit.subscribedBy.filter(
-      (s) => s.toString() !== user._id.toString()
+      s => s.toString() !== user._id.toString()
     );
 
     user.subscribedSubs = user.subscribedSubs.filter(
-      (s) => s.toString() !== subreddit._id.toString()
+      s => s.toString() !== subreddit._id.toString()
     );
   } else {
     subreddit.subscribedBy = subreddit.subscribedBy.concat(user._id);

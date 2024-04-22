@@ -1,14 +1,14 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
-const customTheme = (darkMode) =>
-  createMuiTheme({
+const customTheme = darkMode =>
+  createTheme({
     palette: {
       type: darkMode ? 'dark' : 'light',
       primary: {
         main: darkMode ? '#ffb28a' : '#FF5700',
       },
       secondary: {
-        main: darkMode ? '#f3b9bb' : '#941a1c',
+        main: darkMode ? '#f3b9bb' : '#212121',
       },
     },
     overrides: {

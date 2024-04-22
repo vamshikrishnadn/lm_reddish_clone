@@ -13,24 +13,20 @@ const postPageReducer = (state = null, action) => {
     case 'VOTE_COMMENT':
       return {
         ...state,
-        comments: state.comments.map((c) =>
-          c.id !== action.payload.commentId
-            ? c
-            : { ...c, ...action.payload.data }
+        comments: state.comments.map(c =>
+          c.id !== action.payload.commentId ? c : { ...c, ...action.payload.data }
         ),
       };
     case 'VOTE_REPLY':
       return {
         ...state,
-        comments: state.comments.map((c) =>
+        comments: state.comments.map(c =>
           c.id !== action.payload.commentId
             ? c
             : {
                 ...c,
-                replies: c.replies.map((r) =>
-                  r.id !== action.payload.replyId
-                    ? r
-                    : { ...r, ...action.payload.data }
+                replies: c.replies.map(r =>
+                  r.id !== action.payload.replyId ? r : { ...r, ...action.payload.data }
                 ),
               }
         ),
@@ -43,7 +39,7 @@ const postPageReducer = (state = null, action) => {
     case 'ADD_REPLY':
       return {
         ...state,
-        comments: state.comments.map((c) =>
+        comments: state.comments.map(c =>
           c.id !== action.payload.commentId
             ? c
             : { ...c, replies: [...c.replies, action.payload.addedReply] }
@@ -52,29 +48,25 @@ const postPageReducer = (state = null, action) => {
     case 'EDIT_COMMENT':
       return {
         ...state,
-        comments: state.comments.map((c) =>
-          c.id !== action.payload.commentId
-            ? c
-            : { ...c, ...action.payload.data }
+        comments: state.comments.map(c =>
+          c.id !== action.payload.commentId ? c : { ...c, ...action.payload.data }
         ),
       };
     case 'DELETE_COMMENT':
       return {
         ...state,
-        comments: state.comments.filter((c) => c.id !== action.payload),
+        comments: state.comments.filter(c => c.id !== action.payload),
       };
     case 'EDIT_REPLY':
       return {
         ...state,
-        comments: state.comments.map((c) =>
+        comments: state.comments.map(c =>
           c.id !== action.payload.commentId
             ? c
             : {
                 ...c,
-                replies: c.replies.map((r) =>
-                  r.id !== action.payload.replyId
-                    ? r
-                    : { ...r, ...action.payload.data }
+                replies: c.replies.map(r =>
+                  r.id !== action.payload.replyId ? r : { ...r, ...action.payload.data }
                 ),
               }
         ),
@@ -82,14 +74,12 @@ const postPageReducer = (state = null, action) => {
     case 'DELETE_REPLY':
       return {
         ...state,
-        comments: state.comments.map((c) =>
+        comments: state.comments.map(c =>
           c.id !== action.payload.commentId
             ? c
             : {
                 ...c,
-                replies: c.replies.filter(
-                  (r) => r.id !== action.payload.replyId
-                ),
+                replies: c.replies.filter(r => r.id !== action.payload.replyId),
               }
         ),
       };
@@ -111,13 +101,16 @@ const postPageReducer = (state = null, action) => {
           }
         }),
       };
+
+    case 'ALL_PRODUCTS':
+      return { ...state, products: action?.payload };
     default:
       return state;
   }
 };
 
-export const fetchPostComments = (id) => {
-  return async (dispatch) => {
+export const fetchPostComments = id => {
+  return async dispatch => {
     const fetchedPost = await postService.getPostComments(id);
 
     dispatch({
@@ -127,8 +120,8 @@ export const fetchPostComments = (id) => {
   };
 };
 
-export const createNewPost = (postObject) => {
-  return async (dispatch) => {
+export const createNewPost = postObject => {
+  return async dispatch => {
     const addedPost = await postService.addNew(postObject);
 
     dispatch({
@@ -141,7 +134,7 @@ export const createNewPost = (postObject) => {
 };
 
 export const updatePost = (id, postObject) => {
-  return async (dispatch) => {
+  return async dispatch => {
     const updatedPost = await postService.editPost(id, postObject);
 
     dispatch({
@@ -152,7 +145,7 @@ export const updatePost = (id, postObject) => {
 };
 
 export const toggleUpvote = (id, upvotedBy, downvotedBy) => {
-  return async (dispatch) => {
+  return async dispatch => {
     let pointsCount = upvotedBy.length - downvotedBy.length;
     if (pointsCount < 0) {
       pointsCount = 0;
@@ -168,7 +161,7 @@ export const toggleUpvote = (id, upvotedBy, downvotedBy) => {
 };
 
 export const toggleDownvote = (id, downvotedBy, upvotedBy) => {
-  return async (dispatch) => {
+  return async dispatch => {
     let pointsCount = upvotedBy.length - downvotedBy.length;
     if (pointsCount < 0) {
       pointsCount = 0;
@@ -183,13 +176,8 @@ export const toggleDownvote = (id, downvotedBy, upvotedBy) => {
   };
 };
 
-export const toggleCommentUpvote = (
-  postId,
-  commentId,
-  upvotedBy,
-  downvotedBy
-) => {
-  return async (dispatch) => {
+export const toggleCommentUpvote = (postId, commentId, upvotedBy, downvotedBy) => {
+  return async dispatch => {
     const pointsCount = upvotedBy.length - downvotedBy.length;
 
     dispatch({
@@ -201,13 +189,8 @@ export const toggleCommentUpvote = (
   };
 };
 
-export const toggleCommentDownvote = (
-  postId,
-  commentId,
-  downvotedBy,
-  upvotedBy
-) => {
-  return async (dispatch) => {
+export const toggleCommentDownvote = (postId, commentId, downvotedBy, upvotedBy) => {
+  return async dispatch => {
     const pointsCount = upvotedBy.length - downvotedBy.length;
 
     dispatch({
@@ -219,14 +202,8 @@ export const toggleCommentDownvote = (
   };
 };
 
-export const toggleReplyUpvote = (
-  postId,
-  commentId,
-  replyId,
-  upvotedBy,
-  downvotedBy
-) => {
-  return async (dispatch) => {
+export const toggleReplyUpvote = (postId, commentId, replyId, upvotedBy, downvotedBy) => {
+  return async dispatch => {
     const pointsCount = upvotedBy.length - downvotedBy.length;
 
     dispatch({
@@ -242,14 +219,8 @@ export const toggleReplyUpvote = (
   };
 };
 
-export const toggleReplyDownvote = (
-  postId,
-  commentId,
-  replyId,
-  downvotedBy,
-  upvotedBy
-) => {
-  return async (dispatch) => {
+export const toggleReplyDownvote = (postId, commentId, replyId, downvotedBy, upvotedBy) => {
+  return async dispatch => {
     const pointsCount = upvotedBy.length - downvotedBy.length;
 
     dispatch({
@@ -266,7 +237,7 @@ export const toggleReplyDownvote = (
 };
 
 export const addComment = (postId, comment) => {
-  return async (dispatch) => {
+  return async dispatch => {
     const addedComment = await postService.postComment(postId, { comment });
 
     dispatch({
@@ -277,7 +248,7 @@ export const addComment = (postId, comment) => {
 };
 
 export const addReply = (postId, commentId, reply) => {
-  return async (dispatch) => {
+  return async dispatch => {
     const addedReply = await postService.postReply(postId, commentId, {
       reply,
     });
@@ -290,7 +261,7 @@ export const addReply = (postId, commentId, reply) => {
 };
 
 export const editComment = (postId, commentId, comment) => {
-  return async (dispatch) => {
+  return async dispatch => {
     await postService.updateComment(postId, commentId, { comment });
     const updatedAt = Date.now();
 
@@ -302,7 +273,7 @@ export const editComment = (postId, commentId, comment) => {
 };
 
 export const deleteComment = (postId, commentId) => {
-  return async (dispatch) => {
+  return async dispatch => {
     await postService.removeComment(postId, commentId);
 
     dispatch({
@@ -313,7 +284,7 @@ export const deleteComment = (postId, commentId) => {
 };
 
 export const editReply = (postId, commentId, replyId, reply) => {
-  return async (dispatch) => {
+  return async dispatch => {
     await postService.updateReply(postId, commentId, replyId, { reply });
     const updatedAt = Date.now();
 
@@ -325,7 +296,7 @@ export const editReply = (postId, commentId, replyId, reply) => {
 };
 
 export const deleteReply = (postId, commentId, replyId) => {
-  return async (dispatch) => {
+  return async dispatch => {
     await postService.removeReply(postId, commentId, replyId);
 
     dispatch({
@@ -335,12 +306,51 @@ export const deleteReply = (postId, commentId, replyId) => {
   };
 };
 
-export const sortComments = (sortBy) => {
-  return (dispatch) => {
+export const sortComments = sortBy => {
+  return dispatch => {
     dispatch({
       type: 'SORT_COMMENTS',
       payload: sortBy,
     });
+  };
+};
+
+export const createNewProduct = postObject => {
+  return async dispatch => {
+    const addedPost = await postService.addProduct(postObject);
+    alert('Added successfully');
+
+    return window.location.reload();
+  };
+};
+
+export const deleteProductDetails = id => {
+  return async dispatch => {
+    const addedPost = await postService.deleteProduct(id);
+    alert('Deleted successfully');
+
+    return window.location.reload();
+  };
+};
+
+export const editProductDetails = (id, values) => {
+  return async dispatch => {
+    const addedPost = await postService.editUserProduct(id, values);
+    alert('Edited successfully');
+
+    return window.location.reload();
+  };
+};
+
+export const getAllProducts = postObject => {
+  return async dispatch => {
+    const products = await postService.getProducts();
+    console.log('🚀 ~ getAllProduct ~ products:', products);
+    dispatch({
+      type: 'ALL_PRODUCTS',
+      payload: products?.payload,
+    });
+    return;
   };
 };
 

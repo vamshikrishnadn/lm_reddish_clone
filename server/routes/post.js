@@ -23,6 +23,10 @@ const {
   downvoteComment,
   upvoteReply,
   downvoteReply,
+  addProduct,
+  getProducts,
+  editProduct,
+  deleteProduct,
 } = require('../controllers/commentVote');
 
 const router = express.Router();
@@ -34,7 +38,7 @@ router.get('/:id/comments', getPostAndComments);
 router.get('/subscribed', auth, getSubscribedPosts);
 router.post('/', auth, createNewPost);
 router.patch('/:id', auth, updatePost);
-router.delete(':id', auth, deletePost);
+router.delete('/:id', auth, deletePost);
 
 //posts vote routes
 router.post('/:id/upvote', auth, upvotePost);
@@ -52,10 +56,12 @@ router.patch('/:id/comment/:commentId/reply/:replyId', auth, updateReply);
 router.post('/:id/comment/:commentId/upvote', auth, upvoteComment);
 router.post('/:id/comment/:commentId/downvote', auth, downvoteComment);
 router.post('/:id/comment/:commentId/reply/:replyId/upvote', auth, upvoteReply);
-router.post(
-  '/:id/comment/:commentId/reply/:replyId/downvote',
-  auth,
-  downvoteReply
-);
+router.post('/:id/comment/:commentId/reply/:replyId/downvote', auth, downvoteReply);
+
+// products
+router.post('/product/add', auth, addProduct);
+router.get('/product/get', getProducts);
+router.post('/product/edit/:id', editProduct);
+router.delete('/product/delete/:id', deleteProduct);
 
 module.exports = router;

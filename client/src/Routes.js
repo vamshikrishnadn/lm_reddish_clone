@@ -11,6 +11,7 @@ import NotFoundPage from './components/NotFoundPage';
 
 import { Container } from '@material-ui/core/';
 import { useMainPaperStyles } from './styles/muiStyles';
+import MarketPlace from './components/Market/MarketPlace';
 
 const Routes = () => {
   const classes = useMainPaperStyles();
@@ -37,6 +38,9 @@ const Routes = () => {
       </Route>
       <Route exact path='/search/:query'>
         <SearchResults />
+      </Route>
+      <Route exact path='/market'>
+        <MarketPlace />
       </Route>
       <Route>
         <NotFoundPage />

@@ -11,9 +11,7 @@ const loginUser = async (req, res) => {
   });
 
   if (!user) {
-    return res
-      .status(400)
-      .send({ message: 'No account with this username has been registered.' });
+    return res.status(400).send({ message: 'No account with this username has been registered.' });
   }
 
   const credentialsValid = await bcrypt.compare(password, user.passwordHash);
@@ -38,18 +36,14 @@ const loginUser = async (req, res) => {
 };
 
 const signupUser = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, name } = req.body;
 
   if (!password || password.length < 6) {
-    return res
-      .status(400)
-      .send({ message: 'Password needs to be atleast 6 characters long.' });
+    return res.status(400).send({ message: 'Password needs to be atleast 6 characters long.' });
   }
 
   if (!username || username.length > 20 || username.length < 3) {
-    return res
-      .status(400)
-      .send({ message: 'Username character length must be in range of 3-20.' });
+    return res.status(400).send({ message: 'Username character length must be in range of 3-20.' });
   }
 
   const existingUser = await User.findOne({
@@ -68,6 +62,7 @@ const signupUser = async (req, res) => {
   const user = new User({
     username,
     passwordHash,
+    name,
   });
 
   const savedUser = await user.save();

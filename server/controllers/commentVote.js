@@ -1,5 +1,6 @@
 const Post = require('../models/post');
 const User = require('../models/user');
+const Products = require('../models/products');
 
 //
 const upvoteComment = async (req, res) => {
@@ -241,4 +242,39 @@ const downvoteReply = async (req, res) => {
   res.status(201).end();
 };
 
-module.exports = { upvoteComment, downvoteComment, upvoteReply, downvoteReply };
+const addProduct = async (req, res) => {
+  await Products.create({ ...req.body, addedBy: req.user });
+  res.status(201).send({ data: true });
+};
+
+const getProducts = async (req, res) => {
+  const products = await Products.find({})
+    .populate([{ model: 'User', path: 'addedBy' }])
+    .sort({ createdOn: -1 });
+  res.status(201).send({ payload: products });
+};
+
+const editProduct = async (req, res) => {
+  const { id } = req.params;
+  await Products.findByIdAndUpdate(id, { ...req.body });
+
+  res.status(201).send({ payload: true });
+};
+
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  await Products.findByIdAndDelete(id);
+
+  res.status(201).send({ payload: true });
+};
+
+module.exports = {
+  upvoteComment,
+  downvoteComment,
+  upvoteReply,
+  downvoteReply,
+  addProduct,
+  getProducts,
+  editProduct,
+  deleteProduct,
+};

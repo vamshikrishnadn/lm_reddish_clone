@@ -292,6 +292,7 @@ const updatePost = async (req, res) => {
 
 const deletePost = async (req, res) => {
   const { id } = req.params;
+  console.log('comming');
 
   const post = await Post.findById(id);
   const author = await User.findById(req.user);

@@ -21,10 +21,11 @@ import { useTheme } from '@material-ui/core/styles';
 import RedditIcon from '@material-ui/icons/Reddit';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import SearchIcon from '@material-ui/icons/Search';
+import PeopleIcon from '@material-ui/icons/People';
 
 const NavBar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
-  const user = useSelector((state) => state.user);
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
@@ -36,7 +37,7 @@ const NavBar = () => {
   };
 
   return (
-    <AppBar position="sticky" color="inherit" elevation={1}>
+    <AppBar position='sticky' color='inherit' elevation={1}>
       <Toolbar disableGutters={isMobile}>
         {!searchOpen && (
           <>
@@ -44,17 +45,17 @@ const NavBar = () => {
               <div className={classes.logoWrapper}>
                 <Button
                   className={classes.logo}
-                  color="primary"
+                  color='primary'
                   component={RouterLink}
-                  to="/"
-                  startIcon={<RedditIcon fontSize="large" />}
-                  size="large"
+                  to='/'
+                  startIcon={<PeopleIcon fontSize='large' />}
+                  size='large'
+                  onClick={() => window.location.reload()}
                 >
-                  reddish
+                  Studex
                 </Button>
-                <Typography variant="caption" color="secondary">
-                  Made with <FavoriteIcon style={{ fontSize: 12 }} /> 
-                  
+                <Typography variant='caption' color='secondary'>
+                  Made with <FavoriteIcon style={{ fontSize: 12 }} />
                 </Typography>
               </div>
               {!isMobile && <SearchBar />}
@@ -62,9 +63,9 @@ const NavBar = () => {
             {isMobile ? (
               <>
                 <IconButton
-                  color="primary"
+                  color='primary'
                   className={classes.searchBtn}
-                  onClick={() => setSearchOpen((prevState) => !prevState)}
+                  onClick={() => setSearchOpen(prevState => !prevState)}
                 >
                   <SearchIcon />
                 </IconButton>
@@ -75,9 +76,7 @@ const NavBar = () => {
             )}
           </>
         )}
-        {searchOpen && isMobile && (
-          <SearchBar isMobile={true} setSearchOpen={setSearchOpen} />
-        )}
+        {searchOpen && isMobile && <SearchBar isMobile={true} setSearchOpen={setSearchOpen} />}
       </Toolbar>
     </AppBar>
   );

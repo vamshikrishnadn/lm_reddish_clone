@@ -8,20 +8,14 @@ import LoadingSpinner from './LoadingSpinner';
 import getErrorMsg from '../utils/getErrorMsg';
 import storageService from '../utils/localStorage';
 
-import {
-  Paper,
-  Typography,
-  useMediaQuery,
-  Link,
-  Button,
-} from '@material-ui/core';
+import { Paper, Typography, useMediaQuery, Link, Button } from '@material-ui/core';
 import { useSubPanelStyles } from '../styles/muiStyles';
 import { useTheme } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import CheckIcon from '@material-ui/icons/Check';
 
 const TopSubsPanel = () => {
-  const { subs, user } = useSelector((state) => state);
+  const { subs, user } = useSelector(state => state);
   const dispatch = useDispatch();
   const classes = useSubPanelStyles();
   const theme = useTheme();
@@ -44,7 +38,7 @@ const TopSubsPanel = () => {
       let updatedSubscribedBy;
 
       if (subscribedBy.includes(user.id)) {
-        updatedSubscribedBy = subscribedBy.filter((s) => s !== user.id);
+        updatedSubscribedBy = subscribedBy.filter(s => s !== user.id);
       } else {
         updatedSubscribedBy = [...subscribedBy, user.id];
       }
@@ -60,42 +54,30 @@ const TopSubsPanel = () => {
   };
 
   return (
-    <Paper variant="outlined" className={classes.mainPaper}>
-      <Paper variant="outlined" className={classes.listPaper}>
-        <Typography variant="h5" color="secondary" className={classes.title}>
-          Top Subreddishes
+    <Paper variant='outlined' className={classes.mainPaper}>
+      <Paper variant='outlined' className={classes.listPaper}>
+        <Typography variant='h5' color='secondary' className={classes.title}>
+          Top communities
         </Typography>
         {loadingSubs ? (
-          <LoadingSpinner text="Fetching subs data..." />
+          <LoadingSpinner text='Fetching subs data...' />
         ) : (
           subs.topSubs.map((s, i) => (
             <div key={s.id} className={classes.listWrapper}>
-              <Typography variant="body2" className={classes.listItem}>
+              <Typography variant='body2' className={classes.listItem}>
                 {`${i + 1}. `}
-                <Link
-                  component={RouterLink}
-                  to={`/r/${s.subredditName}`}
-                  color="primary"
-                >
+                <Link component={RouterLink} to={`/r/${s.subredditName}`} color='primary'>
                   r/{s.subredditName}
                 </Link>
                 {` - ${s.subscriberCount} members `}
               </Typography>
               {loggedUser && (
                 <Button
-                  variant="outlined"
-                  color="primary"
-                  size="small"
-                  startIcon={
-                    isSubscribed(s.subscribedBy, user) ? (
-                      <CheckIcon />
-                    ) : (
-                      <AddIcon />
-                    )
-                  }
-                  onClick={() =>
-                    handleJoinSub(s.id, s.subscribedBy, s.subredditName)
-                  }
+                  variant='outlined'
+                  color='primary'
+                  size='small'
+                  startIcon={isSubscribed(s.subscribedBy, user) ? <CheckIcon /> : <AddIcon />}
+                  onClick={() => handleJoinSub(s.id, s.subscribedBy, s.subredditName)}
                 >
                   {isSubscribed(s.subscribedBy, user) ? 'Joined' : 'Join'}
                 </Button>

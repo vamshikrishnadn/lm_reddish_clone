@@ -11,9 +11,7 @@ const setConfig = () => {
 };
 
 const getPosts = async (sortBy, limit, page) => {
-  const response = await axios.get(
-    `${baseUrl}/?sortby=${sortBy}&limit=${limit}&page=${page}`
-  );
+  const response = await axios.get(`${baseUrl}/?sortby=${sortBy}&limit=${limit}&page=${page}`);
   return response.data;
 };
 
@@ -26,13 +24,11 @@ const getSubPosts = async (limit, page) => {
 };
 
 const getSearchResults = async (query, limit, page) => {
-  const response = await axios.get(
-    `${baseUrl}/search/?query=${query}&limit=${limit}&page=${page}`
-  );
+  const response = await axios.get(`${baseUrl}/search/?query=${query}&limit=${limit}&page=${page}`);
   return response.data;
 };
 
-const addNew = async (postObj) => {
+const addNew = async postObj => {
   const response = await axios.post(`${baseUrl}`, postObj, setConfig());
   return response.data;
 };
@@ -42,30 +38,22 @@ const editPost = async (id, postObj) => {
   return response.data;
 };
 
-const getPostComments = async (id) => {
+const getPostComments = async id => {
   const response = await axios.get(`${baseUrl}/${id}/comments`);
   return response.data;
 };
 
-const upvotePost = async (id) => {
-  const response = await axios.post(
-    `${baseUrl}/${id}/upvote`,
-    null,
-    setConfig()
-  );
+const upvotePost = async id => {
+  const response = await axios.post(`${baseUrl}/${id}/upvote`, null, setConfig());
   return response.data;
 };
 
-const downvotePost = async (id) => {
-  const response = await axios.post(
-    `${baseUrl}/${id}/downvote`,
-    null,
-    setConfig()
-  );
+const downvotePost = async id => {
+  const response = await axios.post(`${baseUrl}/${id}/downvote`, null, setConfig());
   return response.data;
 };
 
-const deletePost = async (id) => {
+const deletePost = async id => {
   const response = await axios.delete(`${baseUrl}/${id}`, setConfig());
   return response.data;
 };
@@ -107,11 +95,7 @@ const downvoteReply = async (postId, commentId, replyId) => {
 };
 
 const postComment = async (postId, commentObj) => {
-  const response = await axios.post(
-    `${baseUrl}/${postId}/comment`,
-    commentObj,
-    setConfig()
-  );
+  const response = await axios.post(`${baseUrl}/${postId}/comment`, commentObj, setConfig());
   return response.data;
 };
 
@@ -134,10 +118,7 @@ const updateComment = async (postId, commentId, commentObj) => {
 };
 
 const removeComment = async (postId, commentId) => {
-  const response = await axios.delete(
-    `${baseUrl}/${postId}/comment/${commentId}`,
-    setConfig()
-  );
+  const response = await axios.delete(`${baseUrl}/${postId}/comment/${commentId}`, setConfig());
   return response.data;
 };
 
@@ -155,6 +136,26 @@ const removeReply = async (postId, commentId, replyId) => {
     `${baseUrl}/${postId}/comment/${commentId}/reply/${replyId}`,
     setConfig()
   );
+  return response.data;
+};
+
+const addProduct = async postObject => {
+  const response = await axios.post(`${baseUrl}/product/add`, postObject, setConfig());
+  return response.data;
+};
+
+const getProducts = async () => {
+  const response = await axios.get(`${baseUrl}/product/get`, setConfig());
+  return response.data;
+};
+
+const editUserProduct = async (id, values) => {
+  const response = await axios.post(`${baseUrl}/product/edit/${id}`, values, setConfig());
+  return response.data;
+};
+
+const deleteProduct = async (id, values) => {
+  const response = await axios.delete(`${baseUrl}/product/delete/${id}`, setConfig());
   return response.data;
 };
 
@@ -178,6 +179,10 @@ const postService = {
   removeComment,
   updateReply,
   removeReply,
+  addProduct,
+  getProducts,
+  editUserProduct,
+  deleteProduct,
 };
 
 export default postService;
