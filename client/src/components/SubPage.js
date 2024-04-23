@@ -92,7 +92,7 @@ const SubPage = () => {
     );
   }
 
-  const {
+  let {
     subredditName,
     subscribedBy,
     subscriberCount,
@@ -102,6 +102,10 @@ const SubPage = () => {
     id,
     subUsers,
   } = subPage.subDetails;
+  if (!id) {
+    id = subPage.subDetails?._id;
+  }
+  console.log('🚀 ~ SubPage ~ admin:', admin);
   console.log('🚀 ~ SubPage ~ subUsers:', subUsers);
 
   const isSubscribed = user && subscribedBy.includes(user.id);
@@ -210,7 +214,7 @@ const SubPage = () => {
                   </div>
                 </div>
               )}
-              {user && user.id === admin.id && !editOpen && (
+              {user && user.id === admin._id && !editOpen && (
                 <div style={{ display: 'flex' }}>
                   <Button
                     onClick={() => setEditOpen(prevState => !prevState)}

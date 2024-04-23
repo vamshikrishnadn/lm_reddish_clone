@@ -36,7 +36,7 @@ const AddPostModal = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [postType, setPostType] = useState('Text');
-  const user = useSelector((state) => state.user);
+  const user = useSelector(state => state.user);
 
   const classes = useDialogStyles();
   const theme = useTheme();
@@ -85,43 +85,34 @@ const AddPostModal = ({
         </MenuItem>
       ) : isMobile ? (
         <HideOnScroll>
-          <Fab
-            className={classes.fab}
-            color="primary"
-            onClick={handleClickOpen}
-          >
+          <Fab className={classes.fab} color='primary' onClick={handleClickOpen}>
             <PostAddIcon />
           </Fab>
         </HideOnScroll>
       ) : (
-        <Paper variant="outlined" className={classes.createPostWrapper}>
+        <Paper variant='outlined' className={classes.createPostWrapper}>
           {user.avatar && user.avatar.exists ? (
-            <Avatar
-              alt={user.username}
-              src={user.avatar.imageLink}
-            />
+            <Avatar alt={user.username} src={user.avatar.imageLink} />
           ) : (
-            <Avatar className={classes.defaultAvatar}>
-              {user.username[0]}
-            </Avatar>
+            <Avatar className={classes.defaultAvatar}>{user.username[0]}</Avatar>
           )}
           <Button
-            color="primary"
-            variant="outlined"
+            color='primary'
+            variant='outlined'
             onClick={handleTextPost}
             fullWidth
             className={classes.createBtn}
             startIcon={<PostAddIcon />}
-            size="large"
+            size='large'
           >
             Create Post
           </Button>
           <div className={classes.iconGroup}>
             <IconButton onClick={handleImagePost}>
-              <ImageIcon color="primary" />
+              <ImageIcon color='primary' />
             </IconButton>
             <IconButton onClick={handleLinkPost}>
-              <LinkIcon color="primary" />
+              <LinkIcon color='primary' />
             </IconButton>
           </div>
         </Paper>
@@ -130,7 +121,7 @@ const AddPostModal = ({
         open={open}
         onClose={handleClose}
         classes={{ paper: classes.dialogWrapper }}
-        maxWidth="md"
+        maxWidth='md'
         fullWidth={true}
       >
         <DialogTitle onClose={handleClose}>

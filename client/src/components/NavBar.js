@@ -43,17 +43,21 @@ const NavBar = () => {
           <>
             <div className={classes.leftPortion}>
               <div className={classes.logoWrapper}>
-                <Button
-                  className={classes.logo}
-                  color='primary'
-                  component={RouterLink}
-                  to='/'
-                  startIcon={<PeopleIcon fontSize='large' />}
-                  size='large'
-                  onClick={() => window.location.reload()}
-                >
-                  Studex
-                </Button>
+                <a href='/'>
+                  <Button
+                    className={classes.logo}
+                    color='primary'
+                    component={RouterLink}
+                    // to='/'
+                    href='/'
+                    startIcon={<PeopleIcon fontSize='large' style={{ color: '#FF5700' }} />}
+                    size='large'
+                    disabled
+                    // onClick={() => window.location.reload()}
+                  >
+                    <span style={{ color: '#FF5700' }}>Studex</span>
+                  </Button>
+                </a>
                 <Typography variant='caption' color='secondary'>
                   Made with <FavoriteIcon style={{ fontSize: 12 }} />
                 </Typography>
