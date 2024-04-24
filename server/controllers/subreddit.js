@@ -11,6 +11,7 @@ const getSubreddits = async (_req, res) => {
 
 const getSubredditPosts = async (req, res) => {
   const { subredditName } = req.params;
+  console.log('🚀 ~ getSubredditPosts ~ subredditName:', subredditName);
   const page = Number(req.query.page);
   const limit = Number(req.query.limit);
   const sortBy = req.query.sortby;
@@ -44,6 +45,11 @@ const getSubredditPosts = async (req, res) => {
   })
     .populate('admin', 'username')
     .lean();
+  console.log('🚀 ~ getSubredditPosts ~ subreddit:', subreddit);
+
+  if (subreddit._id) {
+    subreddit = { ...subreddit, id: subreddit._id };
+  }
 
   const subUsers = await User.find({ _id: { $in: subreddit.subscribedBy } }).lean();
 

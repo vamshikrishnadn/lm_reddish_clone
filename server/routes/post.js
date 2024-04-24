@@ -27,6 +27,7 @@ const {
   getProducts,
   editProduct,
   deleteProduct,
+  buyProduct,
 } = require('../controllers/commentVote');
 
 const router = express.Router();
@@ -63,5 +64,6 @@ router.post('/product/add', auth, addProduct);
 router.get('/product/get', getProducts);
 router.post('/product/edit/:id', editProduct);
 router.delete('/product/delete/:id', deleteProduct);
+router.post('/product/buy/:id', buyProduct);
 
 module.exports = router;

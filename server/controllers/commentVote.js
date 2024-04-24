@@ -268,6 +268,16 @@ const deleteProduct = async (req, res) => {
   res.status(201).send({ payload: true });
 };
 
+const buyProduct = async (req, res) => {
+  const { id } = req.params;
+  const requester = await User.findById(req?.body?.requesterId);
+  delete req?.body?.requesterId;
+  console.log('🚀 ~ buyProduct ~ requester:', requester, req.user);
+  await Products.findByIdAndUpdate(id, { $push: { buyers: { ...req.body, requester } } });
+
+  res.status(201).send({ payload: true });
+};
+
 module.exports = {
   upvoteComment,
   downvoteComment,
@@ -277,4 +287,5 @@ module.exports = {
   getProducts,
   editProduct,
   deleteProduct,
+  buyProduct,
 };

@@ -15,13 +15,14 @@ const productsSchema = new mongoose.Schema(
       trim: true,
     },
     image: { type: String, required: true },
-    email: { type: String, required: true },
-    phone: { type: String, required: true },
-    address: { type: String, required: true },
+    // email: { type: String, required: true },
+    // phone: { type: String, required: true },
+    // address: { type: String, required: true },
     addedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Post',
     },
+    buyers: { type: Array },
     createdOn: { type: Date, default: Date.now },
   },
   {
