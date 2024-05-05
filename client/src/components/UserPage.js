@@ -121,7 +121,7 @@ const UserPage = () => {
             <div className={classes.itemWrapper}>
               <div className={classes.twoItemsDiv}>
                 <Typography variant='body1' color='secondary'>
-                  Karma
+                  Credits
                 </Typography>
                 <Typography variant='h6' color='secondary'>
                   {karmaPoints.commentKarma + karmaPoints.postKarma}
@@ -129,10 +129,10 @@ const UserPage = () => {
               </div>
               <div className={classes.twoItemsDiv}>
                 <Typography variant='body1' color='secondary'>
-                  Post Karma <strong>{karmaPoints.postKarma}</strong>
+                  Post <strong>{karmaPoints.postKarma}</strong>
                 </Typography>
                 <Typography variant='body1' color='secondary'>
-                  Comment Karma <strong>{karmaPoints.commentKarma}</strong>
+                  Comment <strong>{karmaPoints.commentKarma}</strong>
                 </Typography>
               </div>
             </div>
