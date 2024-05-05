@@ -59,13 +59,13 @@ const SubForm = () => {
           <Form className={classes.form}>
             <div className={classes.input}>
               <Typography className={classes.inputIconText} color='primary' variant='h5'>
-                r/
+                c/
               </Typography>
               <TextInput
                 name='subredditName'
                 type='text'
                 placeholder='Enter name'
-                label='Subreddish Name'
+                label='Community Name'
                 required
                 fullWidth
               />

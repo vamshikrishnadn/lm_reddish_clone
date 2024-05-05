@@ -160,12 +160,12 @@ const PostCard = ({ post, toggleUpvote, toggleDownvote }) => {
         </Typography>
         <Typography variant='subtitle2'>
           <Link component={RouterLink} to={`/r/${subreddit.subredditName}`}>
-            r/{subreddit.subredditName}
+            {subreddit.subredditName}
           </Link>
           <Typography variant='caption' className={classes.userAndDate}>
             Posted by{' '}
             <Link component={RouterLink} to={`/u/${author.username}`}>
-              u/{author.username}
+              {author.username}
             </Link>{' '}
             • <TimeAgo datetime={new Date(createdAt)} />
             {createdAt !== updatedAt && '*'}

@@ -95,7 +95,7 @@ const UserPage = () => {
               </Avatar>
             )}
             <Typography variant='h6' color='secondary'>
-              u/{userName}
+              {userName}
             </Typography>
           </div>
           <div className={classes.rightWrapper}>

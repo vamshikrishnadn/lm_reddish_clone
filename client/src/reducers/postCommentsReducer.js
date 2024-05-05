@@ -354,4 +354,15 @@ export const getAllProducts = postObject => {
   };
 };
 
+export const buyUserProducts = (id, values) => {
+  return async dispatch => {
+    const products = await postService.buyProduct(id, values);
+    console.log('🚀 ~ getAllProduct ~ products:', products);
+
+    alert('Successfully requested');
+
+    return window.location.reload();
+  };
+};
+
 export default postPageReducer;

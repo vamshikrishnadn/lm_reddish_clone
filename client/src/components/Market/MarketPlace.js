@@ -7,6 +7,11 @@ import {
   DialogTitle,
   Grid,
   Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   TextField,
   Typography,
 } from '@material-ui/core';
@@ -15,6 +20,7 @@ import { useDialogStyles } from '../../styles/muiStyles';
 import generateBase64Encode from '../../utils/genBase64Encode';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  buyUserProducts,
   createNewProduct,
   deleteProductDetails,
   editProductDetails,
@@ -22,12 +28,15 @@ import {
 } from '../../reducers/postCommentsReducer';
 import LoadingSpinner from '../LoadingSpinner';
 import moment from 'moment';
+import storageService from '../../utils/localStorage';
 
 const MarketPlace = () => {
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState({});
   const [edit, setEdit] = useState(false);
+  const [buyModal, setBuyModal] = useState(false);
   const [editProduct, setEditProduct] = useState({});
+  const [requestProduct, setRequestProduct] = useState({});
   console.log('🚀 ~ MarketPlace ~ editProduct:', editProduct);
   console.log('🚀 ~ MarketPlace ~ values:', values);
 
@@ -35,6 +44,9 @@ const MarketPlace = () => {
   const dispatch = useDispatch();
   const products = useSelector(state => state?.postComments?.products);
   const user = useSelector(state => state?.user);
+
+  const loggedUser = storageService.loadUser() || user;
+  console.log('🚀 ~ MarketPlace ~ loggedUser:', loggedUser);
   console.log('🚀 ~ MarketPlace ~ user:', user);
   console.log('🚀 ~ MarketPlace ~ products:', products);
 
@@ -44,6 +56,10 @@ const MarketPlace = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleBuyClose = () => {
+    setBuyModal(false);
   };
 
   const setImageValues = (name, base64) => {
@@ -78,9 +94,9 @@ const MarketPlace = () => {
       title: product?.title,
       description: product?.description,
       image: product?.image,
-      email: product?.email,
-      phone: product?.phone,
-      address: product?.address,
+      // email: product?.email,
+      // phone: product?.phone,
+      // address: product?.address,
     });
     setOpen(true);
   };
@@ -91,9 +107,6 @@ const MarketPlace = () => {
       title: '',
       description: '',
       image: '',
-      email: '',
-      phone: '',
-      address: '',
     });
     setOpen(true);
   };
@@ -102,6 +115,48 @@ const MarketPlace = () => {
     if (window.confirm('Are you sure you want to delete this product')) {
       dispatch(deleteProductDetails(product.id));
     }
+  };
+
+  const handleBuyProduct = product => {
+    setRequestProduct(product);
+    setBuyModal(true);
+  };
+
+  const submitBuy = e => {
+    e.preventDefault();
+    console.log('requestProduct', requestProduct);
+    dispatch(buyUserProducts(requestProduct.id, { ...values, requesterId: user.id }));
+  };
+
+  const renderBuySection = product => {
+    if (!loggedUser) {
+      return (
+        <Typography variant='subtitle1' style={{ color: 'red' }}>
+          Please login to buy the product.
+        </Typography>
+      );
+    }
+
+    return (
+      user &&
+      user?.id != product?.addedBy.id && (
+        <Button
+          onClick={() => handleBuyProduct(product)}
+          color='primary'
+          variant='outlined'
+          size='small'
+          style={{
+            padding: '0.2em',
+            px: 2,
+            width: 150,
+            marginBottom: 10,
+            marginRight: 10,
+          }}
+        >
+          Buy Now
+        </Button>
+      )
+    );
   };
 
   return products ? (
@@ -146,7 +201,7 @@ const MarketPlace = () => {
                       <Typography variant='body1'>
                         <b>Description: </b> {product?.description}
                       </Typography>
-                      <Typography variant='body1'>
+                      {/* <Typography variant='body1'>
                         <b>Email: </b> {product?.email}
                       </Typography>
                       <Typography variant='body1'>
@@ -154,13 +209,13 @@ const MarketPlace = () => {
                       </Typography>
                       <Typography variant='body1'>
                         <b>Address: </b> {product?.address}
-                      </Typography>
+                      </Typography> */}
                       <Typography variant='body1'>
                         <b>Added on: </b> {moment(product?.createdOn).format('lll')}
                       </Typography>
                     </Box>
 
-                    {user.id == product?.addedBy.id && (
+                    {user?.id == product?.addedBy.id && (
                       <Box style={{ marginTop: 10 }}>
                         <Button
                           onClick={() => handleEditProduct(product)}
@@ -186,8 +241,39 @@ const MarketPlace = () => {
                         >
                           Delete Product
                         </Button>
+                        .
+                        <Box>
+                          {product?.buyers && product?.buyers?.length > 0 ? (
+                            <Table>
+                              <TableHead>
+                                {/* <TableRow> */}
+                                <TableCell>Sl No.</TableCell>
+                                <TableCell>Name</TableCell>
+                                <TableCell>Email</TableCell>
+                                <TableCell>Phone</TableCell>
+                                <TableCell>Address</TableCell>
+                                {/* </TableRow> */}
+                              </TableHead>
+                              <TableBody>
+                                {product?.buyers?.map((buyer, i) => (
+                                  <TableRow key={i}>
+                                    <TableCell>{i + 1}</TableCell>
+                                    <TableCell>{buyer?.requester?.name}</TableCell>
+                                    <TableCell>{buyer?.email}</TableCell>
+                                    <TableCell>{buyer?.phone}</TableCell>
+                                    <TableCell>{buyer?.address}</TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          ) : (
+                            <Typography variant='subtitle1'> No Buyers found</Typography>
+                          )}
+                        </Box>
                       </Box>
                     )}
+
+                    {renderBuySection(product)}
                   </Grid>
                 </Grid>
               </Paper>
@@ -230,7 +316,7 @@ const MarketPlace = () => {
               />
             </Box>
 
-            <Box component={'div'}>
+            <Box component={'div'} style={{ marginBottom: '1rem' }}>
               <label>Upload Image</label>
               <br />
               <input
@@ -243,6 +329,26 @@ const MarketPlace = () => {
               />
             </Box>
 
+            <Button variant='contained' color='primary' type='submit' style={{ marginRight: 10 }}>
+              Submit
+            </Button>
+            <Button variant='contained' sx={{ margin: '0 5px' }} onClick={handleClose}>
+              Cancel
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={buyModal}
+        onClose={handleBuyClose}
+        maxWidth='sm'
+        classes={{ paper: classes.dialogWrapper }}
+        fullWidth
+      >
+        <DialogTitle onClose={handleBuyClose}>Buy Product</DialogTitle>
+        <DialogContent>
+          <form onSubmit={submitBuy}>
             <Box component={'div'} my={2}>
               <TextField
                 variant='filled'
@@ -287,7 +393,7 @@ const MarketPlace = () => {
             <Button variant='contained' color='primary' type='submit' style={{ marginRight: 10 }}>
               Submit
             </Button>
-            <Button variant='contained' sx={{ margin: '0 5px' }} onClick={handleClose}>
+            <Button variant='contained' sx={{ margin: '0 5px' }} onClick={handleBuyClose}>
               Cancel
             </Button>
           </form>

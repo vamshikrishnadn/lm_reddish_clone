@@ -173,7 +173,7 @@ const SubPage = () => {
         <Paper variant='outlined' className={classes.subInfoWrapper}>
           <div className={classes.firstPanel}>
             <Typography variant='h6' color='secondary'>
-              r/{subredditName}
+              {subredditName}
             </Typography>
             <div className={classes.description}>
               {!editOpen ? (
@@ -251,7 +251,7 @@ const SubPage = () => {
                 to={`/u/${admin.username}`}
                 style={{ marginLeft: '0.3em' }}
               >
-                u/{admin.username}
+                {admin.username}
               </Link>
             </Typography>
           </div>

@@ -5,10 +5,12 @@ import { DialogTitle } from './CustomDialogTitle';
 import { Dialog, DialogContent, Button, MenuItem, ListItemIcon } from '@material-ui/core';
 import { useDialogStyles } from '../styles/muiStyles';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const SubFormModal = ({ type, handleCloseMenu }) => {
   const classes = useDialogStyles();
   const [open, setOpen] = useState(false);
+  const history = useHistory();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -38,26 +40,22 @@ const SubFormModal = ({ type, handleCloseMenu }) => {
           >
             Create New Communities
           </Button>
-          <Button
-            color='primary'
-            variant='contained'
-            // onClick={handleClickOpen}
-            href='/market'
-            fullWidth
-            className={classes.createSubBtn}
-            size='large'
-            startIcon={<AddCircleIcon />}
-          >
-            Market Place
-          </Button>
         </>
       ) : (
-        <MenuItem onClick={handleOpenMenu}>
-          <ListItemIcon>
-            <AddCircleIcon style={{ marginRight: 7 }} />
-            Create Subreddish
-          </ListItemIcon>
-        </MenuItem>
+        <>
+          <MenuItem onClick={handleOpenMenu}>
+            <ListItemIcon>
+              <AddCircleIcon style={{ marginRight: 7 }} />
+              Create Communities
+            </ListItemIcon>
+          </MenuItem>
+          <MenuItem onClick={() => history.push('/market')}>
+            <ListItemIcon>
+              <AddCircleIcon style={{ marginRight: 7 }} />
+              Market Place
+            </ListItemIcon>
+          </MenuItem>
+        </>
       )}
 
       <Dialog

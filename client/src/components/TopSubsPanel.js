@@ -13,6 +13,7 @@ import { useSubPanelStyles } from '../styles/muiStyles';
 import { useTheme } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import CheckIcon from '@material-ui/icons/Check';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 const TopSubsPanel = () => {
   const { subs, user } = useSelector(state => state);
@@ -67,7 +68,7 @@ const TopSubsPanel = () => {
               <Typography variant='body2' className={classes.listItem}>
                 {`${i + 1}. `}
                 <Link component={RouterLink} to={`/r/${s.subredditName}`} color='primary'>
-                  r/{s.subredditName}
+                  {s.subredditName}
                 </Link>
                 {` - ${s.subscriberCount} members `}
               </Typography>
@@ -87,6 +88,19 @@ const TopSubsPanel = () => {
         )}
       </Paper>
       {loggedUser && <SubFormModal />}
+      <Button
+        color='primary'
+        variant='contained'
+        // onClick={handleClickOpen}
+        href='/market'
+        fullWidth
+        className={classes.createSubBtn}
+        size='large'
+        startIcon={<AddCircleIcon />}
+        style={{ marginTop: '1rem' }}
+      >
+        Market Place
+      </Button>
     </Paper>
   );
 };

@@ -159,6 +159,11 @@ const deleteProduct = async (id, values) => {
   return response.data;
 };
 
+const buyProduct = async (id, values) => {
+  const response = await axios.post(`${baseUrl}/product/buy/${id}`, values, setConfig());
+  return response.data;
+};
+
 const postService = {
   getPosts,
   getSubPosts,
@@ -183,6 +188,7 @@ const postService = {
   getProducts,
   editUserProduct,
   deleteProduct,
+  buyProduct,
 };
 
 export default postService;
