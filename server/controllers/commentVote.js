@@ -271,9 +271,12 @@ const deleteProduct = async (req, res) => {
 const buyProduct = async (req, res) => {
   const { id } = req.params;
   const requester = await User.findById(req?.body?.requesterId);
+  const existingRequester = requester?.buyers ?? [];
   delete req?.body?.requesterId;
   console.log('🚀 ~ buyProduct ~ requester:', requester, req.user);
-  await Products.findByIdAndUpdate(id, { $push: { buyers: { ...req.body, requester } } });
+  await Products.findByIdAndUpdate(id, {
+    buyers: [...existingRequester, { ...req.body, requester }],
+  });
 
   res.status(201).send({ payload: true });
 };
