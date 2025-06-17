@@ -1,5 +1,7 @@
-# .env
 node_modules
-build
-# Local Netlify folder
-.netlify
+*.env
+.env.production
+.env.development
+# UPLOADS
+UPLOADS/*
+client/build

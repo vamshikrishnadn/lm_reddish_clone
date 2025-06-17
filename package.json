@@ -1,0 +1,39 @@
+{
+  "name": "reddish-amand33p",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "serve": "nodemon index.js",
+    "server": "SET NODE_ENV=DEVELOPMENT& nodemon index.js",
+    "prod": "SET NODE_ENV=PRODUCTION& nodemon index.js",
+    "render-build": "npm install --prefix ./client && npm run build --prefix ./client && npm install",
+    "seeder": "node utils/seeder.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node ./index.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && npm install --prefix client && npm run build --prefix client",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject"
+  },
+  "author": "Vamshi krishna",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "body-parser": "^2.2.0",
+    "cloudinary": "^1.23.0",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.10.0",
+    "mongoose-unique-validator": "^2.0.3",
+    "nodemon": "^3.1.0",
+    "validator": "^13.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.18.0"
+  }
+}
