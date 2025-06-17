@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path'); // <-- add this
 require('express-async-errors');
 const cors = require('cors');
 const middleware = require('./utils/middleware');
@@ -16,8 +17,15 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Serve static files from React
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+
 app.get('/test', (req, res) => {
   res.status(200).send('<h1>workingg</h1>');
+});
+
+app.get('/test', (req, res) => {
+  res.status(200).send('updteeeeee');
 });
 
 app.use('/api', authRoutes);
@@ -28,11 +36,9 @@ app.use('/api/users', userRoutes);
 app.use(middleware.unknownEndpointHandler);
 app.use(middleware.errorHandler);
 
-app.use(express.static(__dirname + '/client'));
-app.use(express.static('client/build'));
+// React frontend fallback
 app.get('*', (req, res) => {
-  console.log('hererer');
-  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
 module.exports = app;
