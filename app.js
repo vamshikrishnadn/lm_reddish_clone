@@ -36,7 +36,7 @@ app.use('/api/users', userRoutes);
 app.use(middleware.unknownEndpointHandler);
 app.use(middleware.errorHandler);
 
-// React frontend fallback
+ // , React frontend fallback
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
